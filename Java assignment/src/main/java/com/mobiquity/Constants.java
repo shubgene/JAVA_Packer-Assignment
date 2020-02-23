@@ -1,4 +1,5 @@
 package com.mobiquity;
+
 public class Constants {
 
 	public static final String INDEX = "index";

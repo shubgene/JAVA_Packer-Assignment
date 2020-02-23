@@ -14,8 +14,20 @@ import com.mobiquity.model.Input;
 import com.mobiquity.model.Item;
 import com.mobiquity.Constants;
 
+/**
+ * PackerApi is responsible for parsing the file and return the list of valid
+ * input.
+ */
 public class PackerApi {
 
+	/**
+	 * This method scans input file and returns the list of inputs.
+	 * 
+	 * @param filePath : path of the file containing the input.
+	 * @return list of valid input or throws exception in case of invalid input or
+	 *         invalid file path.
+	 * @throws APIException
+	 */
 	public static List<Input> fetchInputList(String filePath) throws APIException {
 		File file = new File(filePath);
 		Scanner scanner;
@@ -39,6 +51,12 @@ public class PackerApi {
 		return inputList.size() > 0 ? inputList : null;
 	}
 
+	/**
+	 * This method parse each input string to return a Input object.
+	 * 
+	 * @param line : String input for the package.
+	 * @return the parsed input object.
+	 */
 	public static Input scanEachInput(String line) {
 		ArrayList<Item> itemList = new ArrayList<>();
 		Input input = null;

@@ -18,6 +18,7 @@ public class Packer {
 			throw new APIException("File path missing", new NullPointerException());
 		}
 
+		// Parsing file to fetch the list of inputs.
 		List<Input> list = PackerApi.fetchInputList(filePath);
 
 		if (list == null || list.size() == 0) {
@@ -33,6 +34,15 @@ public class Packer {
 		return output.toString();
 	}
 
+	/**
+	 * This method find the list of items which can be packed with maximum cost
+	 * possible and a total weight not more than W.
+	 * 
+	 * @param W     - Maximum possible weight of the package.
+	 * @param items - List of items to choose from.
+	 * @return - Returns the choosen items with maximum possible weight and maximum
+	 *         cost.
+	 */
 	public static String getPackedItems(int W, ArrayList<Item> items) {
 		int i, w;
 
@@ -51,7 +61,8 @@ public class Packer {
 				} else if (items.get(i - 1).getWeight() <= w) {
 					Item item = items.get(i - 1);
 					selected[i] = 1;
-					K[i][w] = max(item.getValue() + K[i - 1][w - Double.valueOf(item.getWeight()).intValue()], K[i - 1][w]);
+					K[i][w] = max(item.getValue() + K[i - 1][w - Double.valueOf(item.getWeight()).intValue()],
+							K[i - 1][w]);
 				} else {
 					selected[i] = 0;
 					K[i][w] = K[i - 1][w];
@@ -65,8 +76,8 @@ public class Packer {
 
 		for (int x = n; x > 0; x--) {
 			Item item = items.get(x - 1);
-			if ((tempW - item.getWeight() >= 0)
-					&& (K[x][tempW] - K[x - 1][tempW - Double.valueOf(item.getWeight()).intValue()] == item.getValue())) {
+			if ((tempW - item.getWeight() >= 0) && (K[x][tempW]
+					- K[x - 1][tempW - Double.valueOf(item.getWeight()).intValue()] == item.getValue())) {
 				selected[y++] = x - 1;
 				tempW -= item.getWeight();
 			}
@@ -87,6 +98,13 @@ public class Packer {
 		return output.toString();
 	}
 
+	/**
+	 * This method finds the maximum of two numbers.
+	 * 
+	 * @param a
+	 * @param b
+	 * @return the maximum value from two input integers.
+	 */
 	private static int max(int a, int b) {
 		return (a > b) ? a : b;
 	}

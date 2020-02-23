@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -66,8 +65,8 @@ class JavaAssignmentApplicationTest {
 	public void testGetPackedItems() {
 		for (int i = 0; i < input.size(); i++) {
 			Input in = PackerApi.scanEachInput(input.get(i));
-			String expected_output=Packer.getPackedItems(in.getTotal(), in.getItems());
-			assertEquals(output.get(i),expected_output);
+			String expected_output = Packer.getPackedItems(in.getTotal(), in.getItems());
+			assertEquals(output.get(i), expected_output);
 		}
 	}
 
