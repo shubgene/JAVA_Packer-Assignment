@@ -44,8 +44,6 @@ public class PackerApi {
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			throw new APIException("Invalid file path", e);
-		} catch (NumberFormatException e) {
-			throw new APIException("Invalid input", e);
 		}
 
 		return inputList.size() > 0 ? inputList : null;
@@ -57,25 +55,29 @@ public class PackerApi {
 	 * @param line : String input for the package.
 	 * @return the parsed input object.
 	 */
-	public static Input scanEachInput(String line) {
+	public static Input scanEachInput(String line) throws APIException {
 		ArrayList<Item> itemList = new ArrayList<>();
 		Input input = null;
 		String[] arr = line.split(" : ");
 
-		if (arr.length == 2) {
-			int total = Integer.valueOf(arr[0]);
+		try {
+			if (arr.length == 2) {
+				int total = Integer.valueOf(arr[0]);
 
-			Pattern p = Pattern.compile(Constants.REGEX);
-			Matcher m = p.matcher(arr[1]);
+				Pattern p = Pattern.compile(Constants.REGEX);
+				Matcher m = p.matcher(arr[1]);
 
-			while (m.find()) {
-				Item item = new Item(Double.valueOf(Objects.requireNonNull(m.group(Constants.QUANTITY))).intValue(),
-						Integer.valueOf(Objects.requireNonNull(m.group(Constants.PRICE))));
-				itemList.add(item);
+				while (m.find()) {
+					Item item = new Item(Double.valueOf(Objects.requireNonNull(m.group(Constants.QUANTITY))).intValue(),
+							Integer.valueOf(Objects.requireNonNull(m.group(Constants.PRICE))));
+					itemList.add(item);
+				}
+				if (itemList.size() > 0) {
+					input = new Input(total, itemList);
+				}
 			}
-			if (itemList.size() > 0) {
-				input = new Input(total, itemList);
-			}
+		} catch (NumberFormatException e) {
+			throw new APIException("Invalid input", e);
 		}
 		return input;
 	}
